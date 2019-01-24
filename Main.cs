@@ -30,11 +30,11 @@ namespace MoreRealism
         }
 
 
-        public string Name => "Cheat Mod";
+        public string Name => "More Realism";
 
-        public string Description => "Cheats for Parkitect.";
+        public string Description => "Add more realism to mechanics in Parkitect.";
 
-        string IMod.Identifier => "CheatsMod";
+        string IMod.Identifier => "MoreRealism";
 
 
         #region Implementation of IModSettings

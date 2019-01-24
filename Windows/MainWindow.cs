@@ -7,7 +7,7 @@ namespace MoreRealism.Windows
         private string cycleLengthMonths = "";
         private bool dayNightCycleEnabled = false;
 
-        public MainWindow(MoreRealismController cheatController) : base(cheatController)
+        public MainWindow(MoreRealismController mrController) : base(mrController)
         {
             windowName = "More Realism";
             WindowRect = new Rect(20, 20, 300, 400);
@@ -27,7 +27,7 @@ namespace MoreRealism.Windows
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(string.Format("Park Time : {0}", ParkInfo.ParkTime));
-            
+            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
