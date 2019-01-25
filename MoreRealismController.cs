@@ -11,21 +11,27 @@ namespace MoreRealism
         public MoreRealismSettings settings = null;
         public bool isLoaded = false;
 
+        public MoreRealismController()
+        {
+            Debug.Log("[MoreRealism] Created controller instance");
+            this.Load();
+        }
+
         public void Load()
         {
             if (isLoaded)
                 return;
 
-            if (!GameController.Instance.hasSerializedObject(this))
-                GameController.Instance.addSerializedObject(this);
-
+            MoreRealismManager.Instance.SetController(this.gameObject);
             if (settings == null)
                 settings = new MoreRealismSettings();
 
             windows.Add(new MainWindow(this));
             windows.Add(new MessageBoxWindow(this));
+            windows.Add(new DebuggingWindow(this));
 
             isLoaded = true;
+
             Debug.Log("[MoreRealism] Loaded park mod settings for park");
         }
 
@@ -33,11 +39,6 @@ namespace MoreRealism
         {
             isLoaded = false;
             windows.Clear();
-        }
-
-        public void RemoveFromSave()
-        {
-            GameController.Instance.removeSerializedObject(this);
         }
 
         private void Update()
@@ -99,6 +100,10 @@ namespace MoreRealism
             settings = new MoreRealismSettings();
             settings.deserialize(context, values);
             base.deserialize(context, values);
+
+            // Replace the created instance with the existing one
+            //MoreRealismManager.Instance.SetController(this.gameObject);
+            //this.Load();
         }
 
         public override void serialize(SerializationContext context, Dictionary<string, object> values)

@@ -6,8 +6,6 @@ namespace MoreRealism
 {
     public class Main : IMod
     {
-        private GameObject _go;
-
         public Main()
         {
             SetupKeyBinding();
@@ -23,7 +21,7 @@ namespace MoreRealism
 
         public void onDisabled()
         {
-            _go = null;
+            MoreRealismManager.Instance.RemoveController();
             EventManager.Instance.OnStartPlayingPark -= GameLoadedPark;
         }
 
@@ -31,21 +29,11 @@ namespace MoreRealism
         {
             if (GameController.Instance.isLoadedFromFile && !GameController.Instance.isInScenarioEditor)
             {
-                MoreRealismController mrCon = GameObject.FindObjectOfType<MoreRealismController>();
-                if (_go == null)
-                {
-                    _go = new GameObject("MoreRealismController");
-                    _go.AddComponent<MoreRealismController>();
-                    AssetManager.Instance.registerObject(_go);
-                }
-                else
-                    _go = mrCon.gameObject;
-                _go.GetComponent<MoreRealismController>().Load();
+                MoreRealismManager.Instance.controller.Load();
             }
             else
             {
-                _go.GetComponent<MoreRealismController>().Unload();
-                _go = null;
+                MoreRealismManager.Instance.RemoveController();
             }
         }
 

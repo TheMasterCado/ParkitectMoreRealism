@@ -12,7 +12,7 @@ namespace MoreRealism.Windows
         public MainWindow(MoreRealismController mrController) : base(mrController)
         {
             windowName = "More Realism";
-            WindowRect = new Rect(20, 20, 300, 400);
+            WindowRect = new Rect(20, 20, 200, 250);
 
             //Get settings from controller
             _dayNightCycleEnabled = mrController.settings.dayNightCycleEnabled;
@@ -26,20 +26,14 @@ namespace MoreRealism.Windows
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Day/night length (months) :");
+            GUILayout.Label("Day/night length (months) ("+Controller.getId()+") :");
             _cycleLenghtMonths = GUILayout.TextField(_cycleLenghtMonths);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(string.Format("Park Time : {0}", ParkInfo.ParkTime));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(string.Format("Next switch : {0}", Controller.settings.nextDayNightSwitchTime));
             GUILayout.EndHorizontal();
 
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Debug"))
+                Controller.GetWindow<DebuggingWindow>().OpenWindow();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Save"))
             {
