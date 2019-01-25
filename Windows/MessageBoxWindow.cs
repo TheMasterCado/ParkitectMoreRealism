@@ -8,7 +8,7 @@ namespace MoreRealism.Windows
 
         public MessageBoxWindow(MoreRealismController mrController) : base(mrController)
         {
-            windowName = "Cheat Mod Message";
+            windowName = "MoreRealism - Message";
             drawCloseButton = false;
             WindowRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 50);
         }
@@ -23,7 +23,7 @@ namespace MoreRealism.Windows
             GUILayout.EndHorizontal();
         }
 
-        public void show(string mes)
+        public void Show(string mes)
         {
             message = mes;
             this.OpenWindow();

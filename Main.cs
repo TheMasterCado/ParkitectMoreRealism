@@ -10,38 +10,57 @@ namespace MoreRealism
 
         public Main()
         {
-            setupKeyBinding();
+            SetupKeyBinding();
         }
 
         public void onEnabled()
         {
-            _go = new GameObject();
-            _go.AddComponent<MoreRealismController>();
-            EventManager.Instance.OnStartPlayingPark += gameLoadedPark;
+            EventManager.Instance.OnStartPlayingPark += GameLoadedPark;
+
+            if (GameController.Instance != null)
+                GameLoadedPark();
         }
 
         public void onDisabled()
         {
-            Object.Destroy(_go);
+            _go = null;
+            EventManager.Instance.OnStartPlayingPark -= GameLoadedPark;
         }
 
-        private void gameLoadedPark()
+        private void GameLoadedPark()
         {
-            _go.GetComponent<MoreRealismController>().Load();
+            if (GameController.Instance.isLoadedFromFile && !GameController.Instance.isInScenarioEditor)
+            {
+                MoreRealismController mrCon = GameObject.FindObjectOfType<MoreRealismController>();
+                if (_go == null)
+                {
+                    _go = new GameObject("MoreRealismController");
+                    _go.AddComponent<MoreRealismController>();
+                    AssetManager.Instance.registerObject(_go);
+                }
+                else
+                    _go = mrCon.gameObject;
+                _go.GetComponent<MoreRealismController>().Load();
+            }
+            else
+            {
+                _go.GetComponent<MoreRealismController>().Unload();
+                _go = null;
+            }
         }
 
-        private void setupKeyBinding()
+        private void SetupKeyBinding()
         {
             KeyGroup group = new KeyGroup(Identifier);
             group.keyGroupName = Name;
 
             InputManager.Instance.registerKeyGroup(group);
 
-            registerKey("openSettings", KeyCode.U, "Toggle More Realism settings window",
+            RegisterKey("openSettings", KeyCode.U, "Toggle More Realism settings window",
                 "Use this key to toggle the settings window for the park you're currently in");
         }
 
-        private void registerKey(string identifier, KeyCode keyCode, string name, string description = "")
+        private void RegisterKey(string identifier, KeyCode keyCode, string name, string description = "")
         {
             KeyMapping key = new KeyMapping(Identifier + "/" + identifier, keyCode, KeyCode.None);
             key.keyGroupIdentifier = Identifier;
