@@ -63,11 +63,11 @@
   <ItemGroup>
     <Compile Include="IdGenerator.cs" />
     <Compile Include="MoreRealismController.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="ModSettings.cs" />
     <Compile Include="BaseWindow.cs" />
+    <Compile Include="MoreRealismSettings.cs" />
     <Compile Include="Windows\MainWindow.cs" />
+    <Compile Include="Windows\MessageBoxWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />

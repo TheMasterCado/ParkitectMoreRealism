@@ -4,24 +4,20 @@ using Object = UnityEngine.Object;
 
 namespace MoreRealism
 {
-    public class Main : IMod, IModSettings
+    public class Main : IMod
     {
         private GameObject _go;
-        public string Identifier { get; set; }
-        public static Configuration configuration { get; private set; }
+
+        public Main()
+        {
+            setupKeyBinding();
+        }
 
         public void onEnabled()
         {
-            if (configuration == null)
-            {
-                configuration = new Configuration();
-                configuration.Load();
-                configuration.Save();
-            }
-
             _go = new GameObject();
-            var modController = _go.AddComponent<MoreRealismController>();
-            modController.Load();
+            _go.AddComponent<MoreRealismController>();
+            EventManager.Instance.OnStartPlayingPark += gameLoadedPark;
         }
 
         public void onDisabled()
@@ -29,47 +25,37 @@ namespace MoreRealism
             Object.Destroy(_go);
         }
 
+        private void gameLoadedPark()
+        {
+            _go.GetComponent<MoreRealismController>().Load();
+        }
+
+        private void setupKeyBinding()
+        {
+            KeyGroup group = new KeyGroup(Identifier);
+            group.keyGroupName = Name;
+
+            InputManager.Instance.registerKeyGroup(group);
+
+            registerKey("openSettings", KeyCode.U, "Toggle More Realism settings window",
+                "Use this key to toggle the settings window for the park you're currently in");
+        }
+
+        private void registerKey(string identifier, KeyCode keyCode, string name, string description = "")
+        {
+            KeyMapping key = new KeyMapping(Identifier + "/" + identifier, keyCode, KeyCode.None);
+            key.keyGroupIdentifier = Identifier;
+            key.keyName = name;
+            key.keyDescription = description;
+            InputManager.Instance.registerKeyMapping(key);
+        }
+
 
         public string Name => "More Realism";
 
         public string Description => "Add more realism to mechanics in Parkitect.";
 
-        string IMod.Identifier => "MoreRealism";
+        public string Identifier => "TheMasterCado@MoreRealism";
 
-
-        #region Implementation of IModSettings
-
-        private bool FetchKey(out KeyCode outKey)
-        {
-            foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
-                if (Input.GetKeyDown(key))
-                {
-                    outKey = key;
-                    return true;
-                }
-
-            outKey = KeyCode.A;
-            return false;
-        }
-
-
-        public void onDrawSettingsUI()
-        {
-            configuration.DrawGUI();
-        }
-
-        public void onSettingsOpened()
-        {
-            if (configuration == null)
-                configuration = new Configuration();
-            configuration.Load();
-        }
-
-        public void onSettingsClosed()
-        {
-            configuration.Save();
-        }
-
-        #endregion
     }
 }

@@ -5,15 +5,24 @@ using UnityEngine;
 
 namespace MoreRealism
 {
-    public class MoreRealismController : MonoBehaviour
+    public class MoreRealismController : SerializedMonoBehaviour
     {
         public List<BaseWindow> windows = new List<BaseWindow>();
+        public MoreRealismSettings settings;
+        public bool isLoaded = false;
 
         public void Load()
         {
-            Debug.Log("Started MoreRealism");
-
+            Debug.Log("MoreRealism -> Started park");
+            settings = GameController.Instance.parkGO.GetComponent<MoreRealismSettings>();
+            if(settings == null)
+            {
+                GameController.Instance.park;
+            }
             windows.Add(new MainWindow(this));
+            windows.Add(new MessageBoxWindow(this));
+
+            EventManager.Instance.OnMonthChanged += checkDayNightCycle;
         }
 
         private void OnDestroy()
@@ -21,19 +30,27 @@ namespace MoreRealism
 
         private void Update()
         {
-            if (Input.GetKeyDown(Main.configuration.settings.openWindow))
+            if(isLoaded)
             {
-                Debug.Log("Toggled MoreRealism MainWindow");
+                // Check for settings window input
+                if (InputManager.getKeyUp("TheMasterCado@MoreRealism/openSettings"))
+                {
+                    Debug.Log("Toggled MoreRealism MainWindow");
 
-                BaseWindow mainWindow = GetWindow<MainWindow>();
-                Debug.Log(mainWindow.ToString());
-                mainWindow.ToggleWindowState();
+                    BaseWindow mainWindow = GetWindow<MainWindow>();
+                    mainWindow.ToggleWindowState();
+                }
+
+                if (Input.GetKeyUp(KeyCode.Escape))
+                    foreach (var window in windows)
+                        if (window.isOpen)
+                            window.CloseWindow();
             }
+        }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-                foreach (var window in windows)
-                    if (window.isOpen)
-                        window.CloseWindow();
+        private void checkDayNightCycle()
+        {
+
         }
 
         public T GetWindow<T>() where T : BaseWindow

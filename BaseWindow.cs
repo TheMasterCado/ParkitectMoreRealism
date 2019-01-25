@@ -44,7 +44,7 @@ namespace MoreRealism
         public void DrawMain(int windowId)
         {
             if (drawCloseButton)
-                if (GUI.Button(new Rect(WindowRect.width - 21, 6, 15, 15), "x"))
+                if (GUI.Button(new Rect(WindowRect.width - 30, 10, 25, 25), "x"))
                     CloseWindow();
             GUI.BeginGroup(new Rect(0, 0, WindowRect.width, WindowRect.height));
             DrawContent();
