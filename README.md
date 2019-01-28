@@ -7,10 +7,10 @@ I suggest you subscribe to the mod on the workshop for ease of use : xxxxxx
 If you do not use Steam or want to manually install the mod, download the repository and copy the TheMasterCado@MoreRealism folder into your Parkitect/Mods folder.
 
 # Known bugs
-* When the mod reopen the attraction before reopening the park at the end of the night, unfinished attractions are opened anyway.
+* When the mod reopen the attractions, before reopening the park at the end of the night, unfinished attractions are opened anyway.
 
 # Author
-The author of this mod is [TheMasterCado](https://github.com/TheMasterCado)
+The author of this mod is [TheMasterCado](https://github.com/TheMasterCado).
 
 # Credits
 
