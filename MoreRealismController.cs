@@ -8,6 +8,7 @@ namespace MoreRealism
     public class MoreRealismController : SerializedMonoBehaviour
     {
         public static MoreRealismController Instance;
+        public static string VERSION = "1.0";
 
         public List<BaseWindow> windows = new List<BaseWindow>();
         public MoreRealismSettings settings = null;
@@ -15,7 +16,7 @@ namespace MoreRealism
 
         private bool _prefabFlag = false;
 
-        public void Start()
+        private void Start()
         {
             if (_prefabFlag)
                 return;
@@ -88,6 +89,53 @@ namespace MoreRealism
                 GameController.Instance.park.weatherController.IsNight = !GameController.Instance.park.weatherController.IsNight;
                 settings.nextDayNightSwitchTime = ParkInfo.ParkTime + settings.cycleLenghtMonths * 300;
             }
+
+            if (settings.kickOutGuestsAtNight && ParkInfo.ParkTime >= settings.nextParkStateSwitchTime)
+            {
+                if (GameController.Instance.park.weatherController.IsNight)
+                {
+                    GameController.Instance.park.setState(Park.State.CLOSED_SEND_GUESTS_HOME);
+                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime;
+                }
+                else
+                {
+                    GameController.Instance.park.setState(Park.State.OPENED);
+                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
+                }
+
+            }
+
+            if (settings.closeEverythingAtNight && ParkInfo.ParkTime >= settings.nextEverythingStateSwitchTime)
+            {
+                if (settings.nextParkStateSwitchTime - settings.nextEverythingStateSwitchTime > 40)
+                {
+                    foreach (Attraction attr in GameController.Instance.park.getAttractions())
+                    {
+                        if (attr.isOpened())
+                            attr.setState(Attraction.State.CLOSED);
+                    }
+                    foreach (Shop sh in GameController.Instance.park.getShops())
+                    {
+                        sh.close();
+                    }
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime - 30;
+                }
+                else
+                {
+                    foreach (Attraction attr in GameController.Instance.park.getAttractions())
+                    {
+                        if (attr.canOpen(out string b))
+                            attr.setState(Attraction.State.OPENED);
+                    }
+                    foreach (Shop sh in GameController.Instance.park.getShops())
+                    {
+                        sh.open();
+                    }
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 30 + settings.cycleLenghtMonths * 450;
+                }
+            }
+
+
         }
 
         public void SaveSettings()
@@ -96,6 +144,21 @@ namespace MoreRealism
                 return;
 
             settings.nextDayNightSwitchTime = ParkInfo.ParkTime + settings.cycleLenghtMonths * 300;
+
+            if (settings.kickOutGuestsAtNight)
+            {
+                if (GameController.Instance.park.weatherController.IsNight)
+                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime - settings.cycleLenghtMonths * 150;
+                else
+                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
+
+                if (settings.closeEverythingAtNight)
+                {
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 30;
+                }
+            }
+
+            GameController.Instance.park.settings.freeRideEntranceFees = settings.autoFreeRides;
         }
 
         public T GetWindow<T>() where T : BaseWindow
