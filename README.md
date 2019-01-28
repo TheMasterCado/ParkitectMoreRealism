@@ -2,7 +2,7 @@
 MoreRealism mod for Parkitect. Add day/night cycle, closing the park during night, closing shops and attractions.
 
 # Installation
-I suggest you to subscribe to the mod on the workshop for ease of use : [https://steamcommunity.com/sharedfiles/filedetails/?id=1638239864
+I suggest you to subscribe to the mod on the workshop for ease of use : [https://steamcommunity.com/sharedfiles/filedetails/?id=1638239864](Workshop page)
 
 If you do not use Steam or want to manually install the mod, download the repository and copy the TheMasterCado@MoreRealism folder into your Parkitect/Mods folder.
 
