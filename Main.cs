@@ -1,11 +1,13 @@
 ﻿using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace MoreRealism
 {
     public class Main : IMod
     {
+        private GameObject _controllerGO;
+        private MoreRealismController _controllerPrefab;
+
         public Main()
         {
             SetupKeyBinding();
@@ -13,28 +15,20 @@ namespace MoreRealism
 
         public void onEnabled()
         {
-            EventManager.Instance.OnStartPlayingPark += GameLoadedPark;
+            GameObject controllerPrefabGO = new GameObject();
+            _controllerPrefab = controllerPrefabGO.AddComponent<MoreRealismController>();
+            _controllerPrefab.SetAsPrefab();
+            AssetManager.Instance.registerObject(_controllerPrefab);
 
-            if (GameController.Instance != null)
-                GameLoadedPark();
+            _controllerGO = new GameObject();
+            MoreRealismController.Instance = _controllerGO.AddComponent<MoreRealismController>();
         }
 
         public void onDisabled()
         {
-            MoreRealismManager.Instance.RemoveController();
-            EventManager.Instance.OnStartPlayingPark -= GameLoadedPark;
-        }
-
-        private void GameLoadedPark()
-        {
-            if (GameController.Instance.isLoadedFromFile && !GameController.Instance.isInScenarioEditor)
-            {
-                MoreRealismManager.Instance.controller.Load();
-            }
-            else
-            {
-                MoreRealismManager.Instance.RemoveController();
-            }
+            MoreRealismController.Instance.Kill();
+            AssetManager.Instance.unregisterObject(_controllerPrefab);
+            _controllerPrefab.Kill();
         }
 
         private void SetupKeyBinding()

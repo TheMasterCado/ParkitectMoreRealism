@@ -65,7 +65,6 @@
     <Compile Include="MoreRealismController.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="BaseWindow.cs" />
-    <Compile Include="MoreRealismManager.cs" />
     <Compile Include="MoreRealismSettings.cs" />
     <Compile Include="Windows\DebuggingWindow.cs" />
     <Compile Include="Windows\MainWindow.cs" />

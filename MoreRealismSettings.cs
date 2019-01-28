@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace MoreRealism
 {
@@ -21,14 +23,19 @@ namespace MoreRealism
         public override void deserialize(SerializationContext context, Dictionary<string, object> values)
         {
             object tmp;
-
-            if (values.TryGetValue("cycleLenghtMonths", out tmp))
-                cycleLenghtMonths = (int)tmp;
-            if (values.TryGetValue("dayNightCycleEnabled", out tmp))
-                dayNightCycleEnabled = (bool)tmp;
-            if (values.TryGetValue("nextDayNightSwitchTime", out tmp))
-                nextDayNightSwitchTime = (int)tmp;
-
+            try
+            {
+                if (values.TryGetValue("cycleLenghtMonths", out tmp))
+                    cycleLenghtMonths = Convert.ToInt32(tmp);
+                if (values.TryGetValue("dayNightCycleEnabled", out tmp))
+                    dayNightCycleEnabled = Convert.ToBoolean(tmp);
+                if (values.TryGetValue("nextDayNightSwitchTime", out tmp))
+                    nextDayNightSwitchTime = Convert.ToInt32(tmp);
+            }
+            catch
+            {
+                Debug.Log("[MoreRealism] Couln'd load saved controller");
+            }
             base.deserialize(context, values);
         }
     }

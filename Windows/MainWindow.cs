@@ -12,7 +12,7 @@ namespace MoreRealism.Windows
         public MainWindow(MoreRealismController mrController) : base(mrController)
         {
             windowName = "More Realism";
-            WindowRect = new Rect(20, 20, 200, 250);
+            WindowRect = new Rect(20, 20, 300, 250);
 
             //Get settings from controller
             _dayNightCycleEnabled = mrController.settings.dayNightCycleEnabled;
