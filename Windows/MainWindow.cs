@@ -5,7 +5,7 @@ namespace MoreRealism.Windows
 {
     public class MainWindow : BaseWindow
     {
-        private bool _dayNightCycleEnabled, _autoFreeRides, _kickOutGuestsAtNight, _closeEverythingAtNight;
+        private bool _dayNightCycleEnabled, _kickOutGuestsAtNight, _closeEverythingAtNight;
         private string _cycleLenghtMonths;
 
 
@@ -13,17 +13,30 @@ namespace MoreRealism.Windows
         {
             windowName = "More Realism";
             WindowRect = new Rect(20, 20, 300, 250);
+        }
 
+        public override void OnOpen()
+        {
             //Get settings from controller
-            _dayNightCycleEnabled = mrController.settings.dayNightCycleEnabled;
-            _autoFreeRides = mrController.settings.autoFreeRides;
-            _kickOutGuestsAtNight = mrController.settings.kickOutGuestsAtNight;
-            _closeEverythingAtNight = mrController.settings.closeEverythingAtNight;
-            _cycleLenghtMonths = mrController.settings.cycleLenghtMonths.ToString();
+            _dayNightCycleEnabled = Controller.settings.dayNightCycleEnabled;
+            _kickOutGuestsAtNight = Controller.settings.kickOutGuestsAtNight;
+            _closeEverythingAtNight = Controller.settings.closeEverythingAtNight;
+            _cycleLenghtMonths = Controller.settings.cycleLenghtMonths.ToString();
         }
 
         public override void DrawContent()
         {
+            GUILayout.BeginHorizontal();
+            GameController.Instance.park.settings.freeRideEntranceFees = 
+                GUILayout.Toggle(GameController.Instance.park.settings.freeRideEntranceFees, "  Automatically set rides as free");
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("-----------------------------------");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal();
             _dayNightCycleEnabled = GUILayout.Toggle(_dayNightCycleEnabled, "  Enable day/night cycle");
             GUILayout.EndHorizontal();
@@ -34,15 +47,13 @@ namespace MoreRealism.Windows
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            _autoFreeRides = GUILayout.Toggle(_autoFreeRides, "  Automatically set rides as free");
+             if(!(_kickOutGuestsAtNight = GUILayout.Toggle(_kickOutGuestsAtNight, "  Kick out guests at night")))
+                _closeEverythingAtNight = false;
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            _kickOutGuestsAtNight = GUILayout.Toggle(_kickOutGuestsAtNight, "  Kick out guests at night");
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            _closeEverythingAtNight = GUILayout.Toggle(_closeEverythingAtNight, "  Close everything at night");
+            if (_closeEverythingAtNight = GUILayout.Toggle(_closeEverythingAtNight, "  Close everything at night"))
+                _kickOutGuestsAtNight = true;
             GUILayout.EndHorizontal();
 
             GUILayout.FlexibleSpace();
@@ -57,11 +68,11 @@ namespace MoreRealism.Windows
 
                     Controller.settings.cycleLenghtMonths = cycleLenghtMonths_int;
                     Controller.settings.dayNightCycleEnabled = _dayNightCycleEnabled;
-                    Controller.settings.autoFreeRides = _autoFreeRides;
                     Controller.settings.kickOutGuestsAtNight = _kickOutGuestsAtNight;
                     Controller.settings.closeEverythingAtNight = _closeEverythingAtNight;
 
                     Controller.SaveSettings();
+                    Controller.GetWindow<MessageBoxWindow>().Show("Settings saved, the cycle have been reset");
                 }
                 else
                     Controller.GetWindow<MessageBoxWindow>().Show("Please enter a valid integer");

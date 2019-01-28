@@ -22,7 +22,7 @@ namespace MoreRealism.Windows
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("-------------------------");
+            GUILayout.Label("-----------------------------------");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 

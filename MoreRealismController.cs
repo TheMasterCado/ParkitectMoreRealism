@@ -107,7 +107,7 @@ namespace MoreRealism
 
             if (settings.closeEverythingAtNight && ParkInfo.ParkTime >= settings.nextEverythingStateSwitchTime)
             {
-                if (settings.nextParkStateSwitchTime - settings.nextEverythingStateSwitchTime > 40)
+                if (settings.nextParkStateSwitchTime - settings.nextEverythingStateSwitchTime > 70)
                 {
                     foreach (Attraction attr in GameController.Instance.park.getAttractions())
                     {
@@ -118,7 +118,7 @@ namespace MoreRealism
                     {
                         sh.close();
                     }
-                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime - 30;
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime - 60;
                 }
                 else
                 {
@@ -131,7 +131,7 @@ namespace MoreRealism
                     {
                         sh.open();
                     }
-                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 30 + settings.cycleLenghtMonths * 450;
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 60 + settings.cycleLenghtMonths * 450;
                 }
             }
 
@@ -143,22 +143,19 @@ namespace MoreRealism
             if (_prefabFlag)
                 return;
 
+            GameController.Instance.park.weatherController.IsNight = false;
+
             settings.nextDayNightSwitchTime = ParkInfo.ParkTime + settings.cycleLenghtMonths * 300;
 
             if (settings.kickOutGuestsAtNight)
             {
-                if (GameController.Instance.park.weatherController.IsNight)
-                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime - settings.cycleLenghtMonths * 150;
-                else
-                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
+               settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
 
                 if (settings.closeEverythingAtNight)
                 {
-                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 30;
+                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 60;
                 }
             }
-
-            GameController.Instance.park.settings.freeRideEntranceFees = settings.autoFreeRides;
         }
 
         public T GetWindow<T>() where T : BaseWindow

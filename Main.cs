@@ -54,7 +54,7 @@ namespace MoreRealism
 
         public string Name => "More Realism";
 
-        public string Description => "Add more realism to mechanics in Parkitect.";
+        public string Description => "Add more realism to Parkitect (day/night cycle, etc.).";
 
         public string Identifier => "TheMasterCado@MoreRealism";
 

@@ -6,9 +6,8 @@ namespace MoreRealism
 {
     public class MoreRealismSettings : SerializedRawObject
     {
-        public int cycleLenghtMonths = 2;
+        public int cycleLenghtMonths = 4;
         public bool dayNightCycleEnabled = true;
-        public bool autoFreeRides = true;
         public bool kickOutGuestsAtNight = true;
         public bool closeEverythingAtNight = true;
 
@@ -22,7 +21,7 @@ namespace MoreRealism
             {
                 nextDayNightSwitchTime = ParkInfo.ParkTime + cycleLenghtMonths * 300;
                 nextParkStateSwitchTime = nextDayNightSwitchTime + cycleLenghtMonths * 150;
-                nextEverythingStateSwitchTime = nextParkStateSwitchTime + 30;
+                nextEverythingStateSwitchTime = nextParkStateSwitchTime + 60;
             }
             catch
             {
@@ -34,7 +33,6 @@ namespace MoreRealism
         {
             values.Add("cycleLenghtMonths", cycleLenghtMonths);
             values.Add("dayNightCycleEnabled", dayNightCycleEnabled);
-            values.Add("autoFreeRides", dayNightCycleEnabled);
             values.Add("kickOutGuestsAtNight", kickOutGuestsAtNight);
             values.Add("nextDayNightSwitchTime", nextDayNightSwitchTime);
             values.Add("nextParkStateSwitchTime", nextParkStateSwitchTime);
@@ -52,8 +50,6 @@ namespace MoreRealism
                     cycleLenghtMonths = Convert.ToInt32(tmp);
                 if (values.TryGetValue("dayNightCycleEnabled", out tmp))
                     dayNightCycleEnabled = Convert.ToBoolean(tmp);
-                if (values.TryGetValue("autoFreeRides", out tmp))
-                    autoFreeRides = Convert.ToBoolean(tmp);
                 if (values.TryGetValue("kickOutGuestsAtNight", out tmp))
                     kickOutGuestsAtNight = Convert.ToBoolean(tmp);
                 if (values.TryGetValue("nextDayNightSwitchTime", out tmp))

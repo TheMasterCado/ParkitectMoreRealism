@@ -24,11 +24,14 @@ namespace MoreRealism
         public void ToggleWindowState()
         {
             isOpen = !isOpen;
+            if (isOpen)
+                this.OnOpen();
         }
 
         public void OpenWindow()
         {
             isOpen = true;
+            this.OnOpen();
         }
 
         public void CloseWindow()
@@ -54,6 +57,10 @@ namespace MoreRealism
         }
 
         public virtual void DrawContent()
+        {
+        }
+
+        public virtual void OnOpen()
         {
         }
     }
