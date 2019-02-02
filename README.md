@@ -9,10 +9,10 @@ For issues/bugs you can:
 
 For feature requests you can:
  - submit an issue on GitHub: https://github.com/TheMasterCado/ParkitectMoreRealism/issues/new
- - tweet to me: https://twitter.com/themastercado
+ - tweet me: https://twitter.com/themastercado
 
 For anything else:
- - tweet to me: https://twitter.com/themastercado
+ - tweet me: https://twitter.com/themastercado
 
 ## Installation
 
