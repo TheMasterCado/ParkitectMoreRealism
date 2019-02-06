@@ -25,7 +25,7 @@ If you do not use Steam or want to manually install the mod, download the reposi
 
 ## Usage
 
-Open the settings (in-game) : U
+**Press U*** to open the settings window (in-game)
 
 ## Author
 
