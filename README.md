@@ -7,15 +7,9 @@ MoreRealism mod for Parkitect. Add day/night cycle, closing the park during nigh
 
 ## Contact
 
-For issues/bugs you can:
- - submit an issue on GitHub: https://github.com/TheMasterCado/ParkitectMoreRealism/issues/new
-
-For feature requests you can:
- - submit an issue on GitHub: https://github.com/TheMasterCado/ParkitectMoreRealism/issues/new
- - tweet me: https://twitter.com/themastercado
-
-For anything else:
- - tweet me: https://twitter.com/themastercado
+For issues/bugs, feature requests or anything else you can:
+ - [Submit an issue](https://github.com/TheMasterCado/ParkitectMoreRealism/issues/new)
+ - [Tweet me](https://twitter.com/themastercado)
 
 ## Installation
 
@@ -25,7 +19,7 @@ If you do not use Steam or want to manually install the mod, download the reposi
 
 ## Usage
 
-**Press U*** to open the settings window (in-game)
+**Press U** to open the settings window (in-game)
 
 ## Author
 
