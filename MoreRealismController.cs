@@ -7,8 +7,8 @@ namespace MoreRealism
 {
     public class MoreRealismController : SerializedMonoBehaviour
     {
+        public static string Version = "1.1";
         public static MoreRealismController Instance;
-        public static string VERSION = "1.0";
 
         public List<BaseWindow> windows = new List<BaseWindow>();
         public MoreRealismSettings settings = null;
@@ -31,7 +31,7 @@ namespace MoreRealism
 
         public void Load()
         {
-            if (_prefabFlag)
+            if (_prefabFlag || GameController.Instance.isInScenarioEditor)
                 return;
 
             if (isLoaded)
@@ -87,7 +87,7 @@ namespace MoreRealism
             if (ParkInfo.ParkTime >= settings.nextDayNightSwitchTime)
             {
                 GameController.Instance.park.weatherController.IsNight = !GameController.Instance.park.weatherController.IsNight;
-                settings.nextDayNightSwitchTime = ParkInfo.ParkTime + settings.cycleLenghtMonths * 300;
+                settings.nextDayNightSwitchTime = (int)(ParkInfo.ParkTime + settings.cycleLenghtMonths * 300);
             }
 
             if (settings.kickOutGuestsAtNight && ParkInfo.ParkTime >= settings.nextParkStateSwitchTime)
@@ -100,14 +100,19 @@ namespace MoreRealism
                 else
                 {
                     GameController.Instance.park.setState(Park.State.OPENED);
-                    settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
+                    settings.nextParkStateSwitchTime = (int)(settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150);
                 }
 
             }
 
             if (settings.closeEverythingAtNight && ParkInfo.ParkTime >= settings.nextEverythingStateSwitchTime)
             {
-                if (settings.nextParkStateSwitchTime - settings.nextEverythingStateSwitchTime > 70)
+                int compareDiff;
+                if (settings.cycleLenghtMonths < 1)
+                    compareDiff = (int)(settings.cycleLenghtMonths * 60 + 2);
+                else
+                    compareDiff = 65;
+                if (settings.nextParkStateSwitchTime - settings.nextEverythingStateSwitchTime > compareDiff)
                 {
                     foreach (Attraction attr in GameController.Instance.park.getAttractions())
                     {
@@ -118,7 +123,10 @@ namespace MoreRealism
                     {
                         sh.close();
                     }
-                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime - 60;
+                    if (settings.cycleLenghtMonths < 1)
+                        settings.nextEverythingStateSwitchTime = (int)(settings.nextParkStateSwitchTime - (settings.cycleLenghtMonths * 60));
+                    else
+                        settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime - 60;
                 }
                 else
                 {
@@ -131,7 +139,10 @@ namespace MoreRealism
                     {
                         sh.open();
                     }
-                    settings.nextEverythingStateSwitchTime = settings.nextParkStateSwitchTime + 60 + settings.cycleLenghtMonths * 450;
+                    if (settings.cycleLenghtMonths < 1)
+                        settings.nextEverythingStateSwitchTime = (int)(settings.nextParkStateSwitchTime + (settings.cycleLenghtMonths * 60) + settings.cycleLenghtMonths * 450);
+                    else
+                        settings.nextEverythingStateSwitchTime = (int)(settings.nextParkStateSwitchTime + 60 + settings.cycleLenghtMonths * 450);
                 }
             }
 
@@ -145,11 +156,11 @@ namespace MoreRealism
 
             GameController.Instance.park.weatherController.IsNight = false;
 
-            settings.nextDayNightSwitchTime = ParkInfo.ParkTime + settings.cycleLenghtMonths * 300;
+            settings.nextDayNightSwitchTime = (int)(ParkInfo.ParkTime + settings.cycleLenghtMonths * 300);
 
             if (settings.kickOutGuestsAtNight)
             {
-               settings.nextParkStateSwitchTime = settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150;
+               settings.nextParkStateSwitchTime = (int)(settings.nextDayNightSwitchTime + settings.cycleLenghtMonths * 150);
 
                 if (settings.closeEverythingAtNight)
                 {
@@ -197,6 +208,12 @@ namespace MoreRealism
 
             settings.serialize(context, values);
             base.serialize(context, values);
+        }
+
+        public void closeAllWindows()
+        {
+            foreach (BaseWindow w in windows)
+                w.CloseWindow();
         }
 
         public override string getReferenceName()

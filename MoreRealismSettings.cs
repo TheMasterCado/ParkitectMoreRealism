@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace MoreRealism
 {
     public class MoreRealismSettings : SerializedRawObject
     {
-        public int cycleLenghtMonths = 4;
+        public static int VERSION = 1;
+
+        public decimal cycleLenghtMonths = 4m;
         public bool dayNightCycleEnabled = true;
         public bool kickOutGuestsAtNight = true;
         public bool closeEverythingAtNight = true;
@@ -19,24 +22,28 @@ namespace MoreRealism
         {
             try
             {
-                nextDayNightSwitchTime = ParkInfo.ParkTime + cycleLenghtMonths * 300;
-                nextParkStateSwitchTime = nextDayNightSwitchTime + cycleLenghtMonths * 150;
-                nextEverythingStateSwitchTime = nextParkStateSwitchTime + 60;
+                nextDayNightSwitchTime = (int)(ParkInfo.ParkTime + cycleLenghtMonths * 300);
+                nextParkStateSwitchTime = (int)(nextDayNightSwitchTime + cycleLenghtMonths * 150);
+                if (cycleLenghtMonths < 1)
+                    nextEverythingStateSwitchTime = (int)(nextParkStateSwitchTime + (cycleLenghtMonths * 60));
+                else
+                    nextEverythingStateSwitchTime = nextParkStateSwitchTime + 60;
             }
             catch
             {
-                Debug.Log("[MoreRealism] Couln'd set default values for switch times");
+                Debug.Log("[MoreRealism] Couldn't set default values for switch times");
             }
         }
 
         public override void serialize(SerializationContext context, Dictionary<string, object> values)
         {
-            values.Add("cycleLenghtMonths", cycleLenghtMonths);
+            values.Add("cycleLenghtMonths", cycleLenghtMonths.ToString().Replace(",", "."));
             values.Add("dayNightCycleEnabled", dayNightCycleEnabled);
             values.Add("kickOutGuestsAtNight", kickOutGuestsAtNight);
             values.Add("nextDayNightSwitchTime", nextDayNightSwitchTime);
             values.Add("nextParkStateSwitchTime", nextParkStateSwitchTime);
             values.Add("nextEverythingStateSwitchTime", nextEverythingStateSwitchTime);
+            values.Add("settingsVersion", VERSION);
 
             base.serialize(context, values);
         }
@@ -44,10 +51,11 @@ namespace MoreRealism
         public override void deserialize(SerializationContext context, Dictionary<string, object> values)
         {
             object tmp;
+            int loadedVersion;
             try
             {
                 if (values.TryGetValue("cycleLenghtMonths", out tmp))
-                    cycleLenghtMonths = Convert.ToInt32(tmp);
+                    cycleLenghtMonths = decimal.Parse(Convert.ToString(tmp), CultureInfo.GetCultureInfo("en-US"));
                 if (values.TryGetValue("dayNightCycleEnabled", out tmp))
                     dayNightCycleEnabled = Convert.ToBoolean(tmp);
                 if (values.TryGetValue("kickOutGuestsAtNight", out tmp))
@@ -58,10 +66,13 @@ namespace MoreRealism
                     nextParkStateSwitchTime = Convert.ToInt32(tmp);
                 if (values.TryGetValue("nextEverythingStateSwitchTime", out tmp))
                     nextEverythingStateSwitchTime = Convert.ToInt32(tmp);
+
+                if (values.TryGetValue("settingsVersion", out tmp))
+                    loadedVersion = Convert.ToInt32(tmp);
             }
             catch
             {
-                Debug.Log("[MoreRealism] Couln'd load saved controller");
+                Debug.Log("[MoreRealism] Controller didn't load correctly");
             }
             base.deserialize(context, values);
         }

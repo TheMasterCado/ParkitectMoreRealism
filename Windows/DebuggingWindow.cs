@@ -9,14 +9,14 @@ namespace MoreRealism.Windows
         public DebuggingWindow(MoreRealismController mrController) : base(mrController)
         {
             windowName = "More Realism - Debug";
-            WindowRect = new Rect(20, 20, 250, 250);
+            WindowRect = new Rect(400, 100, 250, 250);
         }
 
         public override void DrawContent()
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label(string.Format("MoreRealism {0}", MoreRealismController.VERSION));
+            GUILayout.Label(string.Format("MoreRealism {0}", MoreRealismController.Version));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 

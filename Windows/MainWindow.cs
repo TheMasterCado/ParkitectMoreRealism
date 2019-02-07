@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace MoreRealism.Windows
@@ -12,7 +13,7 @@ namespace MoreRealism.Windows
         public MainWindow(MoreRealismController mrController) : base(mrController)
         {
             windowName = "More Realism";
-            WindowRect = new Rect(20, 20, 300, 250);
+            WindowRect = new Rect(100, 100, 300, 250);
         }
 
         public override void OnOpen()
@@ -21,7 +22,7 @@ namespace MoreRealism.Windows
             _dayNightCycleEnabled = Controller.settings.dayNightCycleEnabled;
             _kickOutGuestsAtNight = Controller.settings.kickOutGuestsAtNight;
             _closeEverythingAtNight = Controller.settings.closeEverythingAtNight;
-            _cycleLenghtMonths = Controller.settings.cycleLenghtMonths.ToString();
+            _cycleLenghtMonths = Controller.settings.cycleLenghtMonths.ToString().Replace(",", ".");
         }
 
         public override void DrawContent()
@@ -63,19 +64,25 @@ namespace MoreRealism.Windows
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Save"))
             {
-                int cycleLenghtMonths_int;
-                if(int.TryParse(_cycleLenghtMonths, out cycleLenghtMonths_int)) {
+                decimal cycleLenghtMonths_num;
+                _cycleLenghtMonths = _cycleLenghtMonths.Replace(",", ".");
+                if(decimal.TryParse(_cycleLenghtMonths, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out cycleLenghtMonths_num)) {
+                    if (cycleLenghtMonths_num > 0)
+                    {
+                        Controller.settings.cycleLenghtMonths = Math.Round(cycleLenghtMonths_num, 1);
+                        Controller.settings.dayNightCycleEnabled = _dayNightCycleEnabled;
+                        Controller.settings.kickOutGuestsAtNight = _kickOutGuestsAtNight;
+                        Controller.settings.closeEverythingAtNight = _closeEverythingAtNight;
 
-                    Controller.settings.cycleLenghtMonths = cycleLenghtMonths_int;
-                    Controller.settings.dayNightCycleEnabled = _dayNightCycleEnabled;
-                    Controller.settings.kickOutGuestsAtNight = _kickOutGuestsAtNight;
-                    Controller.settings.closeEverythingAtNight = _closeEverythingAtNight;
-
-                    Controller.SaveSettings();
-                    Controller.GetWindow<MessageBoxWindow>().Show("Settings saved, the cycle have been reset");
+                        Controller.SaveSettings();
+                        Controller.closeAllWindows();
+                        Controller.GetWindow<MessageBoxWindow>().Show("Settings saved, the cycle have been reset");
+                    }
+                    else
+                        Controller.GetWindow<MessageBoxWindow>().Show("Please enter number higher than 0");
                 }
                 else
-                    Controller.GetWindow<MessageBoxWindow>().Show("Please enter a valid integer");
+                    Controller.GetWindow<MessageBoxWindow>().Show("Please enter a valid number");
 
             }
             GUILayout.EndHorizontal();

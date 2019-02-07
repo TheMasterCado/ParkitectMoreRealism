@@ -11,6 +11,7 @@ namespace MoreRealism
         public Main()
         {
             SetupKeyBinding();
+
         }
 
         public void onEnabled()
@@ -26,7 +27,8 @@ namespace MoreRealism
 
         public void onDisabled()
         {
-            MoreRealismController.Instance.Kill();
+            if (MoreRealismController.Instance != null)
+                MoreRealismController.Instance.Kill();
             AssetManager.Instance.unregisterObject(_controllerPrefab);
             _controllerPrefab.Kill();
         }
@@ -54,9 +56,10 @@ namespace MoreRealism
 
         public string Name => "More Realism";
 
-        public string Description => "Add more realism to Parkitect (day/night cycle, etc.).";
+        public string Description => "Add new mechanics to make the game more realistic";
 
         public string Identifier => "TheMasterCado@MoreRealism";
 
+        public string Version => MoreRealismController.Version; 
     }
 }
