@@ -13,7 +13,7 @@ namespace MoreRealism
         protected bool usesSkin = true;
 
         protected string windowName = "Base window - More Realism";
-        protected Rect WindowRect = new Rect(20, 20, 200, 200);
+        protected Rect WindowRect = new Rect(100, 100, 200, 200);
 
         public BaseWindow(MoreRealismController controller)
         {
