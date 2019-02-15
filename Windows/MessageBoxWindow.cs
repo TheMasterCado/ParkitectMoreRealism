@@ -10,7 +10,7 @@ namespace MoreRealism.Windows
         {
             windowName = "MoreRealism - Message";
             drawCloseButton = false;
-            WindowRect = new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 50);
+            WindowRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100);
         }
 
         public override void DrawContent()
@@ -18,8 +18,13 @@ namespace MoreRealism.Windows
             GUILayout.BeginHorizontal();
             GUILayout.Label(message);
             GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Close")) CloseWindow();
+            if (GUILayout.Button("Close"))
+            {
+                CloseWindow();
+                this.WindowRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100);
+            }
             GUILayout.EndHorizontal();
         }
 
@@ -27,6 +32,12 @@ namespace MoreRealism.Windows
         {
             message = mes;
             this.OpenWindow();
+        }
+
+        public void Show(string mes, int width, int height)
+        {
+            this.WindowRect = new Rect(Screen.width / 2 - width / 2, Screen.height / 2 - height / 2, width, height);
+            this.Show(mes);
         }
     }
 }
