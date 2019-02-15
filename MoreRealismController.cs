@@ -47,6 +47,12 @@ namespace MoreRealism
             GameController.Instance.addSerializedObject(this);
 
             isLoaded = true;
+
+            string notif = "You are currently playing on a park with these options enabled :\n";
+            notif += this.settings.dayNightCycleEnabled ? "\n- Day/night cycle" : "";
+            notif += this.settings.kickOutGuestsAtNight ? "\n- Close the park for half of the night" : "";
+            notif += this.settings.closeEverythingAtNight ? "\n- Close attractions and shops for half of the night" : "";
+            GetWindow<MessageBoxWindow>().Show(notif, 350, 150);
         }
 
         public void Unload()

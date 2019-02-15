@@ -11,8 +11,8 @@ namespace MoreRealism
 
         public decimal cycleLenghtMonths = 4m;
         public bool dayNightCycleEnabled = true;
-        public bool kickOutGuestsAtNight = true;
-        public bool closeEverythingAtNight = true;
+        public bool kickOutGuestsAtNight = false;
+        public bool closeEverythingAtNight = false;
 
         public int nextDayNightSwitchTime = 0;
         public int nextParkStateSwitchTime = 0;
@@ -40,6 +40,7 @@ namespace MoreRealism
             values.Add("cycleLenghtMonths", cycleLenghtMonths.ToString().Replace(",", "."));
             values.Add("dayNightCycleEnabled", dayNightCycleEnabled);
             values.Add("kickOutGuestsAtNight", kickOutGuestsAtNight);
+            values.Add("closeEverythingAtNight", closeEverythingAtNight);
             values.Add("nextDayNightSwitchTime", nextDayNightSwitchTime);
             values.Add("nextParkStateSwitchTime", nextParkStateSwitchTime);
             values.Add("nextEverythingStateSwitchTime", nextEverythingStateSwitchTime);
@@ -60,6 +61,8 @@ namespace MoreRealism
                     dayNightCycleEnabled = Convert.ToBoolean(tmp);
                 if (values.TryGetValue("kickOutGuestsAtNight", out tmp))
                     kickOutGuestsAtNight = Convert.ToBoolean(tmp);
+                if (values.TryGetValue("closeEverythingAtNight", out tmp))
+                    closeEverythingAtNight = Convert.ToBoolean(tmp);
                 if (values.TryGetValue("nextDayNightSwitchTime", out tmp))
                     nextDayNightSwitchTime = Convert.ToInt32(tmp);
                 if (values.TryGetValue("nextParkStateSwitchTime", out tmp))
