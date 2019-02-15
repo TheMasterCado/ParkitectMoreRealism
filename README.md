@@ -1,6 +1,6 @@
 # ParkitectMoreRealism
 
-MoreRealism mod for Parkitect. Add options for a day/night cycle, closing the park for half of the night, closing shops and attractions for half of the night.
+More Realism mod for Parkitect. Add options for a day/night cycle, closing the park for half of the night, closing shops and attractions for half of the night.
 
 
 [![GitHub release](https://img.shields.io/github/release/TheMasterCado/ParkitectMoreRealism.svg)](https://github.com/TheMasterCado/ParkitectMoreRealism/releases/latest)
@@ -22,9 +22,17 @@ If you do not use Steam or want to manually install the mod, download the reposi
 
 **Press U** to open the settings window (in-game)
 
+## Contributing
+
+1. Fork it (<https://github.com/TheMasterCado/ParkitectMoreRealism/fork>)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
+
 ## Author
 
-The author of this mod is [TheMasterCado](https://github.com/TheMasterCado).
+- [TheMasterCado](https://github.com/TheMasterCado) - creator and maintainer
 
 ## Credits
 
