@@ -7,7 +7,7 @@ namespace MoreRealism
 {
     public class MoreRealismController : SerializedMonoBehaviour
     {
-        public static string Version = "1.1";
+        public static string Version = "1.3";
         public static MoreRealismController Instance;
 
         public List<BaseWindow> windows = new List<BaseWindow>();
@@ -15,14 +15,6 @@ namespace MoreRealism
         public bool isLoaded = false;
 
         private bool _prefabFlag = false;
-
-        private void Start()
-        {
-            if (_prefabFlag)
-                return;
-
-            EventManager.Instance.OnStartPlayingPark += Load;
-        }
 
         public void SetAsPrefab()
         {
@@ -66,6 +58,7 @@ namespace MoreRealism
 
         private void Update()
         {
+            //Debug.Log("[MoreRealism] testing update");
             if (_prefabFlag)
                 return;
 
@@ -205,6 +198,7 @@ namespace MoreRealism
 
             Instance.Kill();
             Instance = this;
+            EventManager.Instance.OnStartPlayingPark += Instance.Load;
         }
 
         public override void serialize(SerializationContext context, Dictionary<string, object> values)

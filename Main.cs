@@ -11,7 +11,6 @@ namespace MoreRealism
         public Main()
         {
             SetupKeyBinding();
-
         }
 
         public void onEnabled()
@@ -23,14 +22,18 @@ namespace MoreRealism
 
             _controllerGO = new GameObject();
             MoreRealismController.Instance = _controllerGO.AddComponent<MoreRealismController>();
+            EventManager.Instance.OnStartPlayingPark += MoreRealismController.Instance.Load;
         }
 
         public void onDisabled()
         {
             if (MoreRealismController.Instance != null)
-                MoreRealismController.Instance.Kill();
+            {
+                EventManager.Instance.OnStartPlayingPark -= MoreRealismController.Instance.Load;
+                MoreRealismController.Instance.TryKill();
+            }
             AssetManager.Instance.unregisterObject(_controllerPrefab);
-            _controllerPrefab.Kill();
+           _controllerPrefab.TryKill();
         }
 
         private void SetupKeyBinding()
