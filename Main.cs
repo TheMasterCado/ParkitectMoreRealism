@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MoreRealism
 {
-    public class Main : IMod
+    public class Main : AbstractMod
     {
         private GameObject _controllerGO;
         private MoreRealismController _controllerPrefab;
@@ -13,7 +13,7 @@ namespace MoreRealism
             SetupKeyBinding();
         }
 
-        public void onEnabled()
+        public override void onEnabled()
         {
             GameObject controllerPrefabGO = new GameObject();
             _controllerPrefab = controllerPrefabGO.AddComponent<MoreRealismController>();
@@ -25,7 +25,7 @@ namespace MoreRealism
             EventManager.Instance.OnStartPlayingPark += MoreRealismController.Instance.Load;
         }
 
-        public void onDisabled()
+        public override void onDisabled()
         {
             if (MoreRealismController.Instance != null)
             {
@@ -38,8 +38,8 @@ namespace MoreRealism
 
         private void SetupKeyBinding()
         {
-            KeyGroup group = new KeyGroup(Identifier);
-            group.keyGroupName = Name;
+            KeyGroup group = new KeyGroup(getIdentifier());
+            group.keyGroupName = getName();
 
             InputManager.Instance.registerKeyGroup(group);
 
@@ -49,20 +49,41 @@ namespace MoreRealism
 
         private void RegisterKey(string identifier, KeyCode keyCode, string name, string description = "")
         {
-            KeyMapping key = new KeyMapping(Identifier + "/" + identifier, keyCode, KeyCode.None);
-            key.keyGroupIdentifier = Identifier;
+            KeyMapping key = new KeyMapping(getIdentifier() + "/" + identifier, keyCode, KeyCode.None);
+            key.keyGroupIdentifier = getIdentifier();
             key.keyName = name;
             key.keyDescription = description;
             InputManager.Instance.registerKeyMapping(key);
         }
 
+        public override bool isMultiplayerModeCompatible()
+        {
+            return true;
+        }
 
-        public string Name => "More Realism";
+        public override bool isRequiredByAllPlayersInMultiplayerMode()
+        {
+            return true;
+        }
 
-        public string Description => "Add new mechanics to make the game more realistic";
+        public override string getName()
+        {
+            return "More Realism";
+        }
 
-        public string Identifier => "TheMasterCado@MoreRealism";
+        public override string getDescription()
+        {
+            return "Add new mechanics to make the game more realistic";
+        }
 
-        public string Version => MoreRealismController.Version; 
+        public override string getIdentifier()
+        {
+            return "TheMasterCado@MoreRealism";
+        }
+
+        public override string getVersionNumber()
+        {
+            return MoreRealismController.Version;
+        }
     }
 }

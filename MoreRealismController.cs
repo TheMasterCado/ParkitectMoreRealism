@@ -7,7 +7,7 @@ namespace MoreRealism
 {
     public class MoreRealismController : SerializedMonoBehaviour
     {
-        public static string Version = "1.3";
+        public static string Version = "1.4";
         public static MoreRealismController Instance;
 
         public List<BaseWindow> windows = new List<BaseWindow>();
